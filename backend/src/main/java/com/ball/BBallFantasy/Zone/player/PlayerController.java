@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/player")
+@RequestMapping("/api/players")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PlayerController {
     private final PlayerService playerService;
     @Autowired
@@ -17,26 +18,20 @@ public class PlayerController {
     }
 
     @GetMapping
-    public List<Player> getPlayers(
-            @RequestParam(required = false) String team,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String position,
-            @RequestParam(required = false) Integer age) {
-        if (team != null && position != null) {
-            return playerService.getPlayersbyTeamPos(team, position);
-        } else if (team != null) {
-            return playerService.getPlayersFromTeam(team);
-        } else if (position != null) {
-            return playerService.getPlayersByPos(position);
-        }
-        else if(name!=null){
-            return playerService.getPlayersByName(name);
-        }
-        else {
-            return playerService.getPlayers();
-        }
-
+    public List<Player> getAllPlayers() {
+        return playerService.getAllPlayers();
     }
+
+    @GetMapping("/team/{team}")
+    public List<Player> getPlayersByTeam(@PathVariable String team) {
+        return playerService.getPlayersByTeam(team);
+    }
+
+    @GetMapping("/position/{position}")
+    public List<Player> getPlayersByPosition(@PathVariable String position) {
+        return playerService.getPlayersByPosition(position);
+    }
+
     @PostMapping
     public ResponseEntity<Player> addPlayer(@RequestBody Player player){
         Player createdPLayer = playerService.addPlayer(player);
