@@ -61,10 +61,23 @@ const PositionSearch = () => {
         overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: 'background.default',
+        bgcolor: '#f2f2f2',
         boxSizing: 'border-box',
         py: { xs: 2, sm: 4 },
         px: 0,
+        position: 'relative',
+        '::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'url(/basketball-watermark.png) center/40vw no-repeat',
+          opacity: 0.08,
+          zIndex: 0,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Typography
@@ -75,6 +88,10 @@ const PositionSearch = () => {
           textAlign: 'center',
           mb: 4,
           fontWeight: 'bold',
+          color: 'primary.main',
+          letterSpacing: 2,
+          textShadow: '1px 2px 8px #3949ab88',
+          zIndex: 1,
         }}
       >
         Position Search
@@ -85,6 +102,7 @@ const PositionSearch = () => {
           width: '100%',
           maxWidth: 400,
           mx: 'auto',
+          zIndex: 1,
         }}
       >
         <FormControl fullWidth size="medium">
@@ -93,12 +111,20 @@ const PositionSearch = () => {
             value={position}
             label="Select Position"
             onChange={(e) => handlePositionChange(e.target.value)}
+            sx={{
+              fontWeight: 700,
+              color: position ? 'primary.main' : 'inherit',
+              borderColor: position ? '#ffd600' : 'primary.main',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: position ? '#ffd600' : 'primary.main',
+              },
+            }}
           >
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
             {positions.map((pos) => (
-              <MenuItem key={pos} value={pos}>
+              <MenuItem key={pos} value={pos} sx={{ fontWeight: 700, color: 'primary.main' }}>
                 {pos}
               </MenuItem>
             ))}
@@ -124,6 +150,7 @@ const PositionSearch = () => {
             gap: 4,
             width: '100%',
             boxSizing: 'border-box',
+            zIndex: 1,
           }}
         >
           {players.map((player) => (
@@ -144,9 +171,13 @@ const PositionSearch = () => {
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  boxShadow: 2,
+                  boxShadow: 4,
+                  border: '3px solid',
+                  borderColor: position ? '#ffd600' : 'primary.main',
+                  background: 'linear-gradient(120deg, #fff 60%, #ffd60022 100%)',
                   '&:hover': {
-                    boxShadow: 4,
+                    boxShadow: 10,
+                    background: 'linear-gradient(120deg, #fff 40%, #ff980022 100%)',
                   },
                   boxSizing: 'border-box',
                 }}
@@ -159,7 +190,7 @@ const PositionSearch = () => {
                     p: 3,
                   }}
                 >
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main', letterSpacing: 1 }}>
                     {player.name}
                   </Typography>
                   <Typography color="text.secondary" sx={{ mb: 1 }}>
@@ -178,7 +209,7 @@ const PositionSearch = () => {
         </Box>
       )}
       {!loading && position && players.length === 0 && (
-        <Typography sx={{ mt: 4, textAlign: 'center' }}>
+        <Typography sx={{ mt: 4, textAlign: 'center', color: 'secondary.main', fontWeight: 700, letterSpacing: 1 }}>
           No players found for this position.
         </Typography>
       )}

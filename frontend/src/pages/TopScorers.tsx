@@ -18,7 +18,7 @@ interface Player {
   team: string;
   pos: string;
   pts: number;
-  age: number;
+  ast: number;
 }
 
 const TopScorers = () => {
@@ -47,12 +47,25 @@ const TopScorers = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        width: '100vw',
+        width: '96vw',
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: 'background.default',
-        px: { xs: 1, sm: 2, md: 4 },
+        bgcolor: '#f2f2f2',
+        px: { xs: 2, sm: 3, md: 4 },
         py: { xs: 2, sm: 4 },
+        position: 'relative',
+        '::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'url(/basketball-watermark.png) center/40vw no-repeat',
+          opacity: 0.08,
+          zIndex: 0,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Typography
@@ -63,6 +76,9 @@ const TopScorers = () => {
           textAlign: 'center',
           mb: 4,
           fontWeight: 'bold',
+          color: 'primary.main',
+          letterSpacing: 2,
+          zIndex: 1,
         }}
       >
         Top Scorers
@@ -80,24 +96,24 @@ const TopScorers = () => {
         <TableContainer
           component={Paper}
           sx={{
-            boxShadow: 2,
+            boxShadow: 4,
             '&:hover': {
-              boxShadow: 4,
+              boxShadow: 8,
             },
             width: '100%',
-            maxWidth: '1600px',
+            maxWidth: '100%',
             mx: 'auto',
+            zIndex: 1,
           }}
         >
-          <Table>
+          <Table size="medium">
             <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 'bold' }}>Rank</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }}>Player</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }}>Team</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }}>Position</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }}>Age</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>Points per Game</TableCell>
+              <TableRow sx={{ background: 'linear-gradient(90deg, #1a237e 0%, #ffd600 100%)' }}>
+                <TableCell sx={{ fontWeight: 'bold', color: '#fff', fontSize: 16, width: '30%' }}>Player</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#fff', fontSize: 16, width: '20%' }}>Team</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#fff', fontSize: 16, width: '15%' }}>Position</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#fff', fontSize: 16, width: '17.5%' }}>Points</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', color: '#fff', fontSize: 16, width: '17.5%' }}>Assists</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -105,17 +121,17 @@ const TopScorers = () => {
                 <TableRow
                   key={player.name}
                   sx={{
+                    background: index < 3 ? 'linear-gradient(90deg, #ffd60033 0%, #fff 100%)' : 'inherit',
                     '&:hover': {
                       bgcolor: 'action.hover',
                     },
                   }}
                 >
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell sx={{ fontWeight: 'medium' }}>{player.name}</TableCell>
+                  <TableCell sx={{ fontWeight: index < 3 ? 'bold' : 'medium', color: index < 3 ? '#ffd600' : 'primary.main' }}>{player.name}</TableCell>
                   <TableCell>{player.team}</TableCell>
                   <TableCell>{player.pos}</TableCell>
-                  <TableCell>{player.age}</TableCell>
-                  <TableCell align="right">{player.pts.toFixed(1)}</TableCell>
+                  <TableCell sx={{ fontWeight: index < 3 ? 'bold' : 'medium', color: index < 3 ? '#ffd600' : 'primary.main' }}>{player.pts.toFixed(1)}</TableCell>
+                  <TableCell>{player.ast.toFixed(1)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

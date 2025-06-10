@@ -95,10 +95,23 @@ const TeamSearch = () => {
         overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: 'background.default',
+        bgcolor: '#f2f2f2',
         boxSizing: 'border-box',
         py: { xs: 2, sm: 4 },
         px: 0,
+        position: 'relative',
+        '::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'url(/basketball-watermark.png) center/40vw no-repeat',
+          opacity: 0.08,
+          zIndex: 0,
+          pointerEvents: 'none',
+        },
       }}
     >
       <Typography
@@ -109,6 +122,10 @@ const TeamSearch = () => {
           textAlign: 'center',
           mb: 4,
           fontWeight: 'bold',
+          color: 'primary.main',
+          letterSpacing: 2,
+          textShadow: '1px 2px 8px #3949ab88',
+          zIndex: 1,
         }}
       >
         Team Search
@@ -123,6 +140,7 @@ const TeamSearch = () => {
           gap: 2,
           mb: 4,
           width: '100%',
+          zIndex: 1,
         }}
       >
         {teams.map((team) => (
@@ -131,19 +149,23 @@ const TeamSearch = () => {
               onClick={() => handleTeamClick(team.abbr)}
               sx={{
                 cursor: 'pointer',
-                border: selectedTeam === team.abbr ? '3px solid #1976d2' : '2px solid transparent',
+                border: selectedTeam === team.abbr ? '2px solid #3949ab' : '2px solid #3949ab',
                 borderRadius: '50%',
-                p: 1,
-                transition: 'border 0.2s',
-                boxShadow: selectedTeam === team.abbr ? 3 : 1,
-                bgcolor: selectedTeam === team.abbr ? 'primary.lighter' : 'background.paper',
+                p: 1.2,
+                transition: 'border 0.2s, box-shadow 0.2s',
+                boxShadow: selectedTeam === team.abbr ? 6 : 2,
+                bgcolor: selectedTeam === team.abbr ? '#fffde7' : 'background.paper',
                 m: 1,
+                '&:hover': {
+                  border: '4px solid #ff9800',
+                  boxShadow: 8,
+                },
               }}
             >
               <Avatar
                 src={teamToLogo(team.abbr)}
                 alt={team.name}
-                sx={{ width: 64, height: 64, bgcolor: 'white' }}
+                sx={{ width: 70, height: 70, bgcolor: 'transparent' }}
                 variant="circular"
               />
             </Box>
@@ -159,6 +181,9 @@ const TeamSearch = () => {
             mb: 3,
             fontWeight: 'bold',
             color: 'primary.main',
+            letterSpacing: 1,
+            textShadow: '1px 2px 8px #3949ab88',
+            zIndex: 1,
           }}
         >
           {teams.find(t => t.abbr === selectedTeam)?.name} Roster
@@ -179,6 +204,7 @@ const TeamSearch = () => {
           gap: 4,
           width: '100%',
           boxSizing: 'border-box',
+          zIndex: 1,
         }}
       >
         {loading ? (
@@ -204,9 +230,13 @@ const TeamSearch = () => {
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  boxShadow: 2,
+                  boxShadow: 4,
+                  border: '3px solid',
+                  borderColor: selectedTeam ? '#ffd600' : 'primary.main',
+                  background: 'linear-gradient(120deg, #fff 60%, #ffd60022 100%)',
                   '&:hover': {
-                    boxShadow: 4,
+                    boxShadow: 10,
+                    background: 'linear-gradient(120deg, #fff 40%, #ff980022 100%)',
                   },
                   boxSizing: 'border-box',
                 }}
@@ -219,7 +249,7 @@ const TeamSearch = () => {
                     p: 3,
                   }}
                 >
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main', letterSpacing: 1 }}>
                     {player.name}
                   </Typography>
                   <Typography color="text.secondary" sx={{ mb: 1 }}>
@@ -238,7 +268,7 @@ const TeamSearch = () => {
         )}
       </Box>
       {!loading && players.length === 0 && selectedTeam && (
-        <Typography sx={{ mt: 4, textAlign: 'center' }}>
+        <Typography sx={{ mt: 4, textAlign: 'center', color: 'secondary.main', fontWeight: 700, letterSpacing: 1 }}>
           No players found for this team.
         </Typography>
       )}
